@@ -1,0 +1,23 @@
+[
+  {
+    "_id": "local_1779719940430_sqrgmzvzzih",
+    "id": "google_103215973128189847389",
+    "email": "awlstjr1234@gmail.com",
+    "password": null,
+    "name": "양진석",
+    "loginType": "google",
+    "social": {
+      "google": {
+        "id": "103215973128189847389",
+        "linkedAt": "2026-05-25T14:39:00.430Z"
+      }
+    },
+    "settings": {
+      "monthlyBudget": 150000
+    },
+    "ingredients": [],
+    "shopping": [],
+    "lastLogin": "2026-05-25T14:39:00.431Z",
+    "createdAt": "2026-05-25T14:39:00.431Z"
+  }
+]

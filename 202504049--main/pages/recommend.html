@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Meal Fit | 메뉴추천</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+  <div class="grain"></div>
+  <header class="topbar">
+    <a class="brand" href="../index.html"><span class="brand-icon">🥬</span><span>Meal Fit</span></a>
+    <nav class="nav">
+      <a href="login.html">로그인/회원가입</a>
+      <a href="search.html">레시피 검색</a>
+      <a class="active" href="recommend.html">메뉴추천</a>
+      <a href="ingredients.html">재료관리</a>
+      <a href="settings.html">설정</a>
+    </nav>
+  </header>
+
+  <main class="page">
+    <section class="panel">
+      <p class="eyebrow">메뉴추천</p>
+      <h1 style="font-size:2.4rem;">메뉴 추천</h1>
+
+      <div class="inline-between" style="margin-bottom:14px; flex-wrap:wrap; gap:10px;">
+        <p style="margin:0; color:#5b6655; font-size:0.92rem;">예산 범위를 입력하면 해당 범위의 메뉴를 추천합니다.</p>
+        <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+          <label style="margin:0; white-space:nowrap;">예산 범위</label>
+          <input id="minBudgetRec" type="number" value="0" min="0" step="10000" placeholder="최솟값" style="width:110px;" />
+          <span style="color:#5b6655; align-self:center;">~</span>
+          <input id="maxBudgetRec" type="number" value="30000" min="0" step="10000" placeholder="최댓값" style="width:110px;" />
+          <span style="color:#5b6655; align-self:center; white-space:nowrap;">원</span>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px;">
+        <button class="btn primary" id="recommendAiBtn" type="button">예산별 메뉴 추천</button>
+        <a class="btn" href="ingredients.html?mode=recommend">보유 재료 기반 추천</a>
+      </div>
+
+      <div class="form-grid" style="margin-bottom:14px;">
+        <div>
+          <label for="aiMenuPrompt">키워드로 메뉴 검색</label>
+          <textarea id="aiMenuPrompt" rows="2" placeholder="예: 김치, 계란, 돼지고기, 매콤한, 건강식 등 키워드 입력"></textarea>
+        </div>
+        <button class="btn" id="askAiMenuBtn" type="button">키워드 검색</button>
+      </div>
+
+      <div id="recommendAiResult" class="ai-result" style="margin-bottom:14px;" aria-live="polite">
+        <p class="notice">예산 상한을 선택한 뒤 추천 버튼을 누르면 결과가 표시됩니다.</p>
+      </div>
+      <p id="recommendAiMeta" style="margin:0; color:#5a6455; font-size:0.88rem;">대기 중</p>
+
+      <div id="recommendList" class="card-grid" style="margin-top:16px;"></div>
+    </section>
+
+  </main>
+  <script src="../js/app.js"></script>
+</body>
+</html>
