@@ -1,24 +1,66 @@
 # Meal Fit
 
-예산과 보유 재료를 기반으로 레시피를 추천하는 웹사이트 프로토타입입니다.
+예산과 보유 재료를 기반으로 레시피를 추천하는 웹 애플리케이션입니다.
+
+## 기술 스택
+
+| 영역 | 기술 |
+|------|------|
+| 프론트엔드 | Next.js 14 (App Router), React 18 |
+| 스타일 | CSS (globals.css) |
+| 백엔드 | Node.js, Express |
+| 데이터베이스 | MongoDB |
+| 배포 | Vercel (프론트) / Render (백엔드) |
 
 ## 페이지 구성
 
-- 메인: index.html
-- 로그인/회원가입: pages/login.html
-- 레시피 검색: pages/search.html
-- 메뉴추천: pages/recommend.html
-- 레시피 상세: pages/recipe.html
-- 재료관리: pages/ingredients.html
-- 설정(마이페이지): pages/settings.html
+| URL | 설명 |
+|-----|------|
+| `/` | 메인 홈 |
+| `/login` | 로그인 / 회원가입 |
+| `/search` | 레시피 검색 |
+| `/recommend` | 메뉴 추천 |
+| `/recipe` | 레시피 상세 |
+| `/ingredients` | 재료 관리 |
+| `/settings` | 설정 (마이페이지) |
 
-## 실행 방법
+## 프로젝트 구조
 
-정적 페이지이므로 브라우저에서 `index.html`을 열면 됩니다.
+```
+app/                  # Next.js App Router 페이지
+├── layout.jsx        # 공통 레이아웃 (헤더 포함)
+├── globals.css       # 전역 스타일
+├── page.jsx          # 홈 (/)
+├── login/page.jsx    # 로그인
+├── search/page.jsx   # 레시피 검색
+├── recommend/page.jsx# 메뉴 추천
+├── ingredients/page.jsx # 재료관리
+├── settings/page.jsx # 설정
+└── recipe/page.jsx   # 레시피 상세
 
-VS Code Live Server 확장 사용 시 루트에서 실행하면 전체 링크가 정상 동작합니다.
+components/
+├── Header.jsx        # 네비게이션 헤더
+└── RecipeCard.jsx    # 레시피 카드 컴포넌트
 
-백엔드 서버를 켜려면 `backend`에서 다음을 실행하세요:
+lib/
+├── auth.js           # 인증 · API 호출 유틸리티
+└── recipeDb.js       # 레시피 정적 데이터베이스
+
+backend/              # Express 백엔드 서버
+```
+
+## 로컬 실행 방법
+
+### 프론트엔드 (Next.js)
+
+```bash
+npm install
+npm run dev
+```
+
+브라우저에서 `http://localhost:3000` 접속
+
+### 백엔드 (Express)
 
 ```bash
 cd backend
@@ -28,45 +70,48 @@ npm start
 
 ## 구현된 기능
 
-- 로그인/회원가입: 로컬 스토리지 기반 계정 생성 및 로그인
-- SNS 연동: 카카오/네이버 버튼으로 계정 연동, 연동 해제, SNS 로그인(빠른 회원가입 포함)
-- AI 응답: 검색/추천 페이지에서 답변 생성 완료 후 한 번에 표시되며, 요청마다 다른 추천 포인트를 생성
+- **레시피 검색**: 음식명·예산·카테고리 필터로 로컬 DB 및 네이버 블로그 검색
+- **메뉴 추천**: 예산 범위별 추천 및 키워드 검색
+- **재료 관리**: 보유 재료 등록·삭제, 장보기 리스트 관리 (localStorage)
+- **레시피 상세**: 재료·조리 순서·예상 재료비 표시
+- **로그인/회원가입**: 아이디 로그인 및 카카오·네이버·구글 소셜 로그인
+- **설정**: 월 예산 설정, 계정 정보 확인
+
+## Next.js 주요 활용 기능
+
+- **App Router**: `app/` 디렉토리 파일 위치로 URL 자동 라우팅
+- **Server Component**: 정적 페이지(`/`)는 서버에서 렌더링
+- **Client Component**: `'use client'` 지시어로 상태·이벤트가 필요한 페이지 구분
+- **`next/link`**: 클라이언트 사이드 페이지 이동 (새로고침 없음)
+- **`useRouter`**: 로그인 성공 후 코드로 페이지 이동
+- **`usePathname`**: 현재 경로 감지로 네비게이션 active 상태 처리
+- **`metadata` API**: 페이지 title · description 자동 관리
 
 ## 백엔드 환경 변수
 
-`backend/.env` 또는 `backend/.env.example` 파일에 다음 값을 설정해야 합니다:
+`backend/.env` 파일에 다음 값을 설정해야 합니다:
 
-- `MONGODB_URI`: MongoDB 연결 문자열
-  - 예: `mongodb+srv://<username>:<password>@<cluster-url>/mealfit?retryWrites=true&w=majority`
-- `JWT_SECRET`: JWT 서명용 비밀 문자열
-- `FRONTEND_URL`: 프론트엔드가 실행되는 주소
-  - 예: `http://localhost:3000` 또는 `http://localhost:5500`
-- `BACKEND_URL`: 백엔드가 외부에서 접근 가능한 주소
-  - 예: `http://localhost:5000`
-- `KAKAO_CLIENT_ID`, `KAKAO_CLIENT_SECRET`
-- `NAVER_CLIENT_ID`, `NAVER_CLIENT_SECRET`
-- `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`
+```
+MONGODB_URI=mongodb+srv://<username>:<password>@<cluster-url>/mealfit
+JWT_SECRET=비밀키
+FRONTEND_URL=http://localhost:3000
+BACKEND_URL=http://localhost:5000
+KAKAO_CLIENT_ID=
+KAKAO_CLIENT_SECRET=
+NAVER_CLIENT_ID=
+NAVER_CLIENT_SECRET=
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+```
 
-### Codespaces preview 환경에서 실행할 때
+## 소셜 로그인 리디렉션 URI
 
-- 프론트엔드/백엔드가 모두 preview URL로 열리는 경우 `FRONTEND_URL`과 `BACKEND_URL`을 아래처럼 실제 preview 주소로 바꾸세요.
-  - `https://humble-cod-97pqq457vgvr24v-5000.app.github.dev`
-- 만약 프록시 호스트가 변경되면 `BACKEND_URL`과 SNS 리디렉트 URI도 해당 호스트로 등록해야 합니다.
-
-### 카카오 리디렉션 URI 예시
-
-- `http://localhost:5000/api/auth/kakao/callback`
-
-### 네이버 리디렉션 URI 예시
-
-- `http://localhost:5000/api/auth/naver/callback`
-
-### 구글 리디렉션 URI 예시
-
-- `http://localhost:5000/api/auth/google/callback`
+| 제공자 | URI |
+|--------|-----|
+| 카카오 | `http://localhost:5000/api/auth/kakao/callback` |
+| 네이버 | `http://localhost:5000/api/auth/naver/callback` |
+| 구글 | `http://localhost:5000/api/auth/google/callback` |
 
 ## 디버깅
 
-백엔드가 실행 중일 때 아래 URL로 상태를 확인할 수 있습니다:
-
-- `http://localhost:5000/api/auth/status`
+백엔드 상태 확인: `http://localhost:5000/api/auth/status`
