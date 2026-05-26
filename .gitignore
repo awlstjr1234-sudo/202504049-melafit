@@ -1,2 +1,4 @@
 .env
 backend/.env
+.next
+node_modules
